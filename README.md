@@ -1,26 +1,26 @@
 # Agenda CONDELPI — CRM Vehículos y Viviendas
 
-Repositorio web para el contenedor PWA de Agenda CONDELPI. La interfaz se carga desde una aplicación de Google Apps Script mediante un `iframe`.
+Página de acceso para Agenda CONDELPI. La página de GitHub Pages abre la aplicación de Google Apps Script en una pestaña nueva porque los navegadores pueden bloquear la aplicación cuando se intenta mostrar dentro de un `iframe`.
 
 ## Archivos
 
-- `index.html`: página contenedora para escritorio y móvil.
+- `index.html`: página de acceso responsive con enlace a la aplicación.
 - `manifest.json`: metadatos de la aplicación instalable.
-- `logo.png`: archivo de imagen que debes agregar; se referencia como icono y acceso directo móvil.
+- `logo.png`: icono opcional que debe agregarse a la raíz del repositorio para que estén disponibles los iconos del manifiesto.
+- `.github/workflows/deploy-pages.yml`: flujo que publica el contenido de la rama `main` en GitHub Pages.
 
-## Configuración antes de publicar
+## Aplicación
 
-- La URL `/exec` de Google Apps Script ya está configurada en `index.html`.
-- Agrega `logo.png` en la raíz del repositorio. El manifiesto lo referencia en tamaños de 192×192 y 512×512.
-- Prueba la URL de Apps Script directamente y luego comprueba la página contenedora en móvil y escritorio.
+La URL configurada se encuentra en `index.html`. Si cambia la implementación de Apps Script, actualiza el enlace allí.
 
-**Importante:** no publiques una URL de Apps Script sin verificar que corresponda a esta aplicación. La dirección estará visible en el código del cliente. No incluyas contraseñas, claves API ni otros secretos en `index.html`.
+## Publicación
 
-## Publicar con GitHub Pages
+GitHub Pages está configurado para utilizar **GitHub Actions**. El flujo se ejecuta al actualizar la rama `main` y también admite ejecución manual desde **Actions → Deploy Agenda CONDELPI to GitHub Pages → Run workflow**.
 
-1. Sube estos archivos a la rama `main` en la raíz del repositorio.
-2. En GitHub, entra en **Settings → Pages**.
-3. En **Build and deployment**, selecciona **Deploy from a branch**, elige `main` y la carpeta `/(root)`, y guarda.
-4. Espera a que GitHub Pages indique que el sitio está publicado y prueba la URL resultante.
+Comprueba que la ejecución termine correctamente antes de compartir la página publicada.
 
-Si el CRM contiene datos personales o información de clientes, mantén el código y los datos protegidos y revisa la visibilidad del repositorio y los permisos de acceso antes de publicarlo.
+## Seguridad
+
+No incrustes la aplicación de Apps Script en un `iframe` si el servicio bloquea la incrustación. Abrirla como página principal en una pestaña separada evita ese bloqueo del navegador sin tener que permitir que otros sitios incrusten la aplicación.
+
+No añadas contraseñas, claves API ni secretos al código público del repositorio.

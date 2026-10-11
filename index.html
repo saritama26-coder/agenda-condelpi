@@ -2,53 +2,71 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Agenda CONDELPI</title>
-
-  <!-- Configuración PWA para iOS (iPhone/iPad) y Android -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CONDELPI">
-  <meta name="theme-color" content="#0f172a">
-
-  <!-- Icono para pantalla de inicio móvil (Sube tu imagen como logo.png al mismo repositorio) -->
-  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="manifest" href="manifest.json">
-
+  <title>Agenda CONDELPI</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #0f172a;
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #0f172a;
+      color: #e2e8f0;
+      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
+    main {
+      width: min(100%, 560px);
+      padding: clamp(24px, 6vw, 42px);
+      text-align: center;
+      background: #172033;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgb(0 0 0 / 28%);
     }
+    .mark {
+      width: 72px; height: 72px; margin: 0 auto 22px;
+      display: grid; place-items: center;
+      border-radius: 18px; background: #24324a;
+      font-size: 32px;
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(26px, 5vw, 34px); line-height: 1.2; }
+    p { margin: 0 0 22px; color: #cbd5e1; }
+    .note {
+      margin: 20px 0 0; font-size: 13px; color: #94a3b8;
+    }
+    a.button {
+      display: inline-flex; justify-content: center; align-items: center;
+      width: 100%; min-height: 52px; padding: 14px 20px;
+      border-radius: 10px; background: #38bdf8; color: #082f49;
+      text-decoration: none; font-weight: 750;
+      transition: background .15s ease, transform .15s ease;
+    }
+    a.button:hover { background: #7dd3fc; transform: translateY(-1px); }
+    a.button:focus-visible { outline: 3px solid #f8fafc; outline-offset: 3px; }
   </style>
 </head>
 <body>
-  <!-- Aplicación publicada en Google Apps Script -->
-  <iframe 
-    id="appFrame"
-    src="https://script.google.com/macros/s/AKfycbzyIIRBrqUeTOslxJLy6oYJxz8RQNIhLjNcpBdqnGCWx0Vy80rtKOOTd77_pHqdxWxD1A/exec" 
-    allow="clipboard-read; clipboard-write; geolocation">
-  </iframe>
-
-  <script>
-    // Permite pasar parámetros como ?v=panel desde la URL de GitHub hacia Apps Script
-    const params = window.location.search;
-    if (params) {
-      const frame = document.getElementById('appFrame');
-      frame.src = frame.src.split('?')[0] + params;
-    }
-  </script>
+  <main>
+    <div class="mark" aria-hidden="true">📋</div>
+    <h1>Agenda CONDELPI</h1>
+    <p>CRM para la gestión de vehículos y viviendas.</p>
+    <a
+      class="button"
+      href="https://script.google.com/macros/s/AKfycbzyIIRBrqUeTOslxJLy6oYJxz8RQNIhLjNcpBdqnGCWx0Vy80rtKOOTd77_pHqdxWxD1A/exec"
+      target="_blank"
+      rel="noopener noreferrer"
+    >Abrir aplicación</a>
+    <p class="note">La aplicación se abrirá en una pestaña nueva para evitar el bloqueo de seguridad de Google Apps Script en marcos incrustados.</p>
+  </main>
 </body>
 </html>

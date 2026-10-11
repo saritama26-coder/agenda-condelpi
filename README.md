@@ -1,5 +1,12 @@
 # Agenda CONDELPI — CRM Vehículos y Viviendas
 
+## Comportamiento móvil
+
+En pantallas pequeñas o dispositivos con puntero táctil, `index.html` abre la URL de Google Apps Script directamente, en lugar de depender de un `iframe`. Esto evita el bloqueo de incrustación y permite que la interfaz ocupe toda la ventana del navegador. En escritorio se conserva la vista integrada.
+
+Este cambio adapta la ruta de acceso, no el diseño interno del CRM. Para optimizar columnas, tarjetas, formularios, tablas y menús de la interfaz de negocio hace falta revisar y modificar el HTML/CSS servido por el proyecto de Apps Script. La configuración móvil se debe probar en el dispositivo real.
+
+
 Contenedor PWA de Agenda CONDELPI servido por GitHub Pages. La interfaz de negocio se entrega desde Google Apps Script dentro de un `iframe`, siguiendo el patrón del proyecto PROFORMA GASV.
 
 ## Enlaces de acceso

@@ -1,26 +1,43 @@
 # Agenda CONDELPI — CRM Vehículos y Viviendas
 
-Página de acceso para Agenda CONDELPI. La página de GitHub Pages abre la aplicación de Google Apps Script en una pestaña nueva porque los navegadores pueden bloquear la aplicación cuando se intenta mostrar dentro de un `iframe`.
+Contenedor PWA de Agenda CONDELPI servido por GitHub Pages. La interfaz de negocio se entrega desde Google Apps Script dentro de un `iframe`, siguiendo el patrón del proyecto PROFORMA GASV.
 
-## Archivos
+## Archivos principales
 
-- `index.html`: página de acceso responsive con enlace a la aplicación.
+- `index.html`: carga la URL `/exec` de Agenda CONDELPI a pantalla completa dentro de un `iframe`.
 - `manifest.json`: metadatos de la aplicación instalable.
-- `logo.png`: icono opcional que debe agregarse a la raíz del repositorio para que estén disponibles los iconos del manifiesto.
-- `.github/workflows/deploy-pages.yml`: flujo que publica el contenido de la rama `main` en GitHub Pages.
+- `logo.png`: icono referenciado por el HTML y el manifiesto; agrega el archivo en la raíz si deseas que aparezca el icono de CONDELPI.
+- `.github/workflows/deploy-pages.yml`: publica automáticamente el sitio cuando hay cambios en `main`.
 
-## Aplicación
+## Cambio obligatorio dentro de Google Apps Script
 
-La URL configurada se encuentra en `index.html`. Si cambia la implementación de Apps Script, actualiza el enlace allí.
+**El `iframe` de GitHub Pages no funcionará hasta que el proyecto de Google Apps Script permita la incrustación.** En el editor del proyecto correcto de CONDELPI, localiza la función existente `doGet()`. En la cadena que devuelve `HtmlOutput`, añade esta llamada al objeto `HtmlOutput` después de `.evaluate()` y antes del punto y coma final:
 
-## Publicación
+```javascript
+.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+```
 
-GitHub Pages está configurado para utilizar **GitHub Actions**. El flujo se ejecuta al actualizar la rama `main` y también admite ejecución manual desde **Actions → Deploy Agenda CONDELPI to GitHub Pages → Run workflow**.
+Por ejemplo, si la función ya utiliza una plantilla HTML llamada `Index`, el retorno tendría esta forma:
 
-Comprueba que la ejecución termine correctamente antes de compartir la página publicada.
+```javascript
+return HtmlService.createTemplateFromFile('Index')
+  .evaluate()
+  .setTitle('Agenda CONDELPI')
+  .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover')
+  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+```
 
-## Seguridad
+No pegues una segunda función `doGet()` al final del archivo: modifica la existente y conserva cualquier lógica propia de CONDELPI que ya contenga. Usa el nombre real del archivo HTML si no se llama `Index`.
 
-No incrustes la aplicación de Apps Script en un `iframe` si el servicio bloquea la incrustación. Abrirla como página principal en una pestaña separada evita ese bloqueo del navegador sin tener que permitir que otros sitios incrusten la aplicación.
+Después, guarda el proyecto y abre **Implementar → Gestionar implementaciones → Editar** (icono de lápiz), selecciona **Nueva versión** y pulsa **Implementar**. Comprueba que la URL `/exec` permanece igual. La configuración `ALLOWALL` permite que otros sitios incrusten la aplicación; úsala solo si es adecuado para la información manejada por CONDELPI y revisa sus controles de acceso frente a *clickjacking*.
 
-No añadas contraseñas, claves API ni secretos al código público del repositorio.
+## Publicar en GitHub Pages
+
+GitHub Pages utiliza **GitHub Actions**. Tras guardar cambios, revisa la ejecución del flujo **Deploy Agenda CONDELPI to GitHub Pages** y confirma que termine correctamente.
+
+- Repositorio: https://github.com/saritama26-coder/agenda-condelpi
+- Sitio: https://saritama26-coder.github.io/agenda-condelpi/
+
+## Nota de seguridad
+
+GitHub Pages publica el código HTML al público. No guardes secretos, credenciales ni datos de clientes en este repositorio. La autorización a datos del CRM debe permanecer en Apps Script/los servicios de backend.

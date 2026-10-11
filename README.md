@@ -2,6 +2,12 @@
 
 Contenedor PWA de Agenda CONDELPI servido por GitHub Pages. La interfaz de negocio se entrega desde Google Apps Script dentro de un `iframe`, siguiendo el patrón del proyecto PROFORMA GASV.
 
+## Enlaces de acceso
+
+- **Aplicación publicada en GitHub Pages:** https://saritama26-coder.github.io/agenda-condelpi/
+- **Implementación actual de Google Apps Script:** https://script.google.com/macros/s/AKfycbzZC9zWRiVMUijCYsvo10Nly5zPrZDJHS14fS2IKfS2z5HIYhHJSXHZvnwR-yhVUOT-5w/exec
+
+
 ## Archivos principales
 
 - `index.html`: carga la URL `/exec` de Agenda CONDELPI a pantalla completa dentro de un `iframe`.

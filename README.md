@@ -61,12 +61,12 @@ El recordatorio de citas puede enviar correos; la campaña diaria de seguimiento
 
 ## Corrección de citas que no aparecían (11/10/2026)
 
-- Causa identificada en el registro de ejecuciones: en las versiones 12 y 13 de la aplicación web, `listarCitas` fallaba con `ReferenceError: leerConfig_ is not defined`, porque el proyecto tenía una versión reducida de `Mensajeria.gs` sin esa función.
-- Solución: se instalaron en el proyecto vinculado los archivos completos del paquete (`Codigo.gs`, `Mensajeria.gs`, `Formulario.html`). En la implementación de prueba (`/dev`) la agenda muestra todas las citas registradas.
-- `listarCitas()` acepta fechas nativas, seriales y de texto (`dd/mm/aaaa`, `aaaa-mm-dd`); la vista inicial es **Todas las citas**.
-- Nuevo menú **CRM Ventas → Revisar citas que no aparecen**: muestra el libro y la pestaña que lee el script y los problemas de fecha, hora, ID o estado por fila.
-- Pendiente: publicar una **Nueva versión** de la implementación web para que la URL `/exec` use el código corregido.
-- Disparadores antiguos `recordatoriosCitas` y `tareaDiaria`, creados por otra cuenta, deben eliminarse desde esa cuenta: sus funciones ya no existen en el código.
+- El fallo identificado en los registros del proyecto fue `ReferenceError: leerConfig_ is not defined`, relacionado con una versión incompleta de `Mensajeria.gs`.
+- El paquete fuente privado `Agenda_CONDELPI_Citas_Corregido.zip` contiene los tres archivos coordinados (`Codigo.gs`, `Mensajeria.gs` y `Formulario.html`). Incluye normalización de fechas/horas, la vista inicial **Todas las citas**, asignación conservadora de ID y estado para filas válidas, y el menú **CRM Ventas → Revisar citas que no aparecen**.
+- La página lanzadora y este README ya utilizan la URL de Apps Script confirmada por el propietario de la aplicación.
+- El repositorio público contiene solo el lanzador; no contiene el código privado del CRM ni los datos de la hoja. Por ello, una publicación correcta de GitHub Pages verifica el lanzador, no sustituye las pruebas funcionales del backend de Apps Script.
+
+Antes de reemplazar el código de producción, conserva una copia de seguridad de la hoja y del proyecto. Aplica la lista de pruebas de `VALIDACION_PRUEBAS.md` en una copia de prueba; después de guardar el código, publica una nueva versión de la aplicación web desde Apps Script y confirma que la URL `/exec` siga siendo la definitiva.
 
 ## Publicación
 

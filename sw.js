@@ -1,4 +1,4 @@
-const CACHE_NAME = "agenda-condelpi-shell-v3";
+const CACHE_NAME = "agenda-condelpi-shell-v4";
 const SHELL_ASSETS = [
   "./",
   "./index.html",

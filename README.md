@@ -59,6 +59,15 @@ El paquete fue revisado estáticamente y los archivos JavaScript pasan la compro
 
 El recordatorio de citas puede enviar correos; la campaña diaria de seguimiento solo debe activarse tras validar la base legal/consentimiento, las plantillas y el horario. Google ejecuta los disparadores en franjas aproximadas, no necesariamente en el minuto exacto.
 
+## Corrección de citas que no aparecían (11/10/2026)
+
+- Causa identificada en el registro de ejecuciones: en las versiones 12 y 13 de la aplicación web, `listarCitas` fallaba con `ReferenceError: leerConfig_ is not defined`, porque el proyecto tenía una versión reducida de `Mensajeria.gs` sin esa función.
+- Solución: se instalaron en el proyecto vinculado los archivos completos del paquete (`Codigo.gs`, `Mensajeria.gs`, `Formulario.html`). En la implementación de prueba (`/dev`) la agenda muestra todas las citas registradas.
+- `listarCitas()` acepta fechas nativas, seriales y de texto (`dd/mm/aaaa`, `aaaa-mm-dd`); la vista inicial es **Todas las citas**.
+- Nuevo menú **CRM Ventas → Revisar citas que no aparecen**: muestra el libro y la pestaña que lee el script y los problemas de fecha, hora, ID o estado por fila.
+- Pendiente: publicar una **Nueva versión** de la implementación web para que la URL `/exec` use el código corregido.
+- Disparadores antiguos `recordatoriosCitas` y `tareaDiaria`, creados por otra cuenta, deben eliminarse desde esa cuenta: sus funciones ya no existen en el código.
+
 ## Publicación
 
 El flujo **Deploy Agenda CONDELPI to GitHub Pages** publica los cambios de la rama `main`. Revisa Actions tras cada actualización.

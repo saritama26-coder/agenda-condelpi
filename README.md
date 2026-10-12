@@ -4,7 +4,7 @@
 
 - **Aplicación / instalador móvil:** https://saritama26-coder.github.io/agenda-condelpi/
 - **Repositorio público del contenedor:** https://github.com/saritama26-coder/agenda-condelpi
-- **Aplicación Google Apps Script:** https://script.google.com/macros/s/AKfycbxci9WLgLBMDPvqEXMtJVzcywmwWLK0QHVcOFDCwTtRpG6RXVFTMDXKdIKgtE60Z7zzGA/exec
+- **Aplicación Google Apps Script:** https://script.google.com/macros/s/AKfycby1NuJxsfpEm0hOvY2LB5Nx52FiOWcn2yKTcPL94oMVOBr4zfRkjEdX512jzWTcf_Rhkw/exec
 
 GitHub Pages sirve una página de lanzamiento e instalación; abre Apps Script en una pestaña separada. No se incrusta el CRM en un `iframe`, para no depender de habilitar la incrustación desde cualquier dominio.
 

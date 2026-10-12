@@ -1,41 +1,64 @@
 # Agenda CONDELPI — CRM Vehículos y Viviendas
 
-Contenedor web instalable para acceder a Agenda CONDELPI, cuya interfaz de negocio se sirve desde Google Apps Script.
+## Acceso
 
-## Enlaces
+- **Aplicación / instalador móvil:** https://saritama26-coder.github.io/agenda-condelpi/
+- **Repositorio público del contenedor:** https://github.com/saritama26-coder/agenda-condelpi
+- **Aplicación Google Apps Script:** https://script.google.com/macros/s/AKfycbzZC9zWRiVMUijCYsvo10Nly5zPrZDJHS14fS2IKfS2z5HIYhHJSXHZvnwR-yhVUOT-5w/exec
 
-- **Aplicación / acceso móvil:** https://saritama26-coder.github.io/agenda-condelpi/
-- **Repositorio:** https://github.com/saritama26-coder/agenda-condelpi
-- **Google Apps Script:** https://script.google.com/macros/s/AKfycbzZC9zWRiVMUijCYsvo10Nly5zPrZDJHS14fS2IKfS2z5HIYhHJSXHZvnwR-yhVUOT-5w/exec
+GitHub Pages sirve una página de lanzamiento e instalación; abre Apps Script en una pestaña separada. No se incrusta el CRM en un `iframe`, para no depender de habilitar la incrustación desde cualquier dominio.
 
-## Logo oficial y acceso móvil
+## Archivos del contenedor
 
-Los archivos `logo.png`, `icon-192.png`, `icon-512.png` y `apple-touch-icon.png` usan ahora el logotipo que proporcionó el usuario. Los iconos PWA se presentan sobre fondo blanco para mejorar su legibilidad en la pantalla de inicio; el dibujo, los colores y la proporción del logotipo se conservan.
+- `index.html`: página de acceso adaptable a móvil y escritorio.
+- `manifest.json`: metadatos de la aplicación instalable.
+- `logo.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`: logotipo oficial del usuario en tamaños adecuados para los iconos.
+- `sw.js`: caché local del instalador y sus recursos estáticos. **No almacena el CRM ni datos de clientes.**
 
-- Página de acceso móvil con el logotipo oficial y botón para abrir el CRM directamente.
-- Botón de instalación en navegadores compatibles y guía para instalación manual en iPhone/iPad y Android.
-- Diseño adaptable, zonas seguras para teléfonos con muesca y objetivos táctiles grandes.
-- El service worker se actualizó a `agenda-condelpi-shell-v2` para invalidar la caché anterior y volver a descargar los nuevos iconos.
-- En escritorio se conserva la vista integrada con una alternativa para abrir Apps Script fuera del marco.
+## Instalar en el teléfono
 
-## Instalar en la pantalla del teléfono
+**iPhone/iPad:** abre el enlace en Safari, pulsa **Compartir** y luego **Añadir a pantalla de inicio**.
 
-**iPhone/iPad:** abre la página en Safari, toca **Compartir** y luego **Añadir a pantalla de inicio**.
+**Android:** abre el enlace en Chrome y selecciona **Instalar aplicación** o **Añadir a pantalla principal**.
 
-**Android:** abre la página en Chrome y selecciona **Instalar aplicación** o **Añadir a pantalla principal** en el menú del navegador.
+El icono solo abre la página de acceso; desde ella se pulsa **Abrir Agenda CONDELPI**. El CRM necesita internet. Si el icono viejo persiste, elimina el acceso directo anterior y vuelve a añadirlo.
 
-El CRM requiere conexión a internet.
+## Actualizar el backend de Apps Script
 
-## Limitaciones y tareas del backend
+La interfaz y la lógica del CRM están en un paquete separado, porque este repositorio público no debe contener los datos ni el código interno del backend.
 
-Este repositorio contiene el contenedor, el manifiesto, los iconos y los recursos estáticos; no contiene el código interno completo del CRM. Por eso no modifica ni certifica los permisos, formularios, tablas, almacenamiento, copias de seguridad, validaciones de datos ni las operaciones comerciales de Google Apps Script. Para auditarlos se requiere el código fuente del proyecto de Apps Script.
+1. Primero duplica la hoja de cálculo de producción y guarda una copia del proyecto actual.
+2. Abre **Extensiones → Apps Script** desde la hoja que usa el CRM.
+3. En el proyecto vinculado, actualiza los archivos existentes con los archivos del paquete privado `Apps_Script/Codigo.gs`, `Apps_Script/Mensajeria.gs` y `Apps_Script/Formulario.html`. Conserva los nombres exactos. No agregues `Index.html`: la función `doGet()` sirve `Formulario.html`.
+4. Guarda y ejecuta desde la hoja **CRM Ventas → 1. Configurar sistema (primer uso)**. Autoriza los permisos de Sheets y Drive cuando Google los solicite. Esta acción configura el CRM y trata de instalar el respaldo semanal y los recordatorios.
+5. Ejecuta **CRM Ventas → Configurar clave de acceso (teléfono)** y define una clave fuerte de al menos 8 caracteres.
+6. Ejecuta **CRM Ventas → Crear respaldo ahora** y confirma que aparezca un archivo en la carpeta de Google Drive `Agenda_CONDELPI_Respaldos`.
+7. Prueba registrar y editar un contacto, validar CI/RUC, agendar/reprogramar/cancelar una cita, exportar Excel y revisar el historial de correo. Las campañas de correo automáticas son opcionales: actívalas solo cuando hayas verificado el consentimiento y las plantillas.
+8. En **Implementar → Gestionar implementaciones**, edita la implementación de aplicación web y selecciona **Nueva versión → Implementar**. La URL `/exec` debería permanecer estable en la implementación editada, pero compruébala antes de usarla.
+9. Verifica que el proyecto desplegado sea el de la hoja de producción correcta. No publiques `Codigo.gs` ni datos de clientes en el repositorio público.
 
-La vista de escritorio usa un `iframe`. Si Apps Script bloquea la incrustación, debe revisarse la configuración de `doGet()` del proyecto correcto antes de decidir si se permite incrustar el contenido. No actives `ALLOWALL` sin revisar los controles de acceso y el riesgo de *clickjacking*.
+El código de Apps Script no se puede desplegar directamente desde esta conexión; debe guardarse y autorizarse desde la cuenta dueña del proyecto.
 
-## Seguridad
+## Mejoras realizadas en el paquete fuente
 
-GitHub Pages publica los archivos del repositorio. No guardes contraseñas, tokens, credenciales ni datos personales de clientes aquí. Los permisos de acceso deben aplicarse en el backend de Google Apps Script, no en el contenedor público.
+- Acceso al servidor antes de mostrar las funciones protegidas; la clave no se almacena en `localStorage`.
+- Hash de clave con sal guardado en propiedades del proyecto y migración del hash anterior tras un acceso válido.
+- Validaciones de identificación ecuatoriana CI/RUC, correo, teléfono, fechas, listas, campos y longitudes en servidor.
+- Evita que textos iniciados por `=`, `+`, `-` o `@` se conviertan en fórmulas al escribir texto en Sheets.
+- Bloqueos de concurrencia para registros, citas y marcado de envíos de WhatsApp; prevención de conflictos de horario.
+- Registro de alta/revocación del consentimiento de comunicaciones y filtros de consentimiento, canal, frecuencia y límite de mensajes.
+- Envío de correo limitado por cuota disponible y por contactos por ejecución, con registro de resultados.
+- Cola WhatsApp manual; el CRM solo abre `wa.me` y no afirma enviar por su cuenta.
+- Copia semanal de la hoja de datos en Google Drive con retención de hasta 30 copias, más copia manual.
+- Interfaz más adaptable, logotipo oficial visible y mensajes de error más claros.
+- `doGet()` ya no solicita `ALLOWALL`; por eso el lanzador no usa iframe.
+
+## Limitaciones que requieren verificación en la cuenta
+
+El paquete fue revisado estáticamente y los archivos JavaScript pasan la comprobación sintáctica de Node después de sustituir los marcadores de plantilla de Apps Script. No equivale a una ejecución dentro de Google Apps Script. Hace falta autorizar Sheets, Drive, MailApp y Calendar según el uso, así como realizar pruebas de usuario en la hoja duplicada. Los respaldos copian la hoja de cálculo, no el código del proyecto; mantén una copia de los archivos fuente por separado.
+
+El recordatorio de citas puede enviar correos; la campaña diaria de seguimiento solo debe activarse tras validar la base legal/consentimiento, las plantillas y el horario. Google ejecuta los disparadores en franjas aproximadas, no necesariamente en el minuto exacto.
 
 ## Publicación
 
-Los cambios en `main` activan el flujo **Deploy Agenda CONDELPI to GitHub Pages**. Comprueba en la pestaña Actions que la ejecución más reciente termine con estado `success`.
+El flujo **Deploy Agenda CONDELPI to GitHub Pages** publica los cambios de la rama `main`. Revisa Actions tras cada actualización.

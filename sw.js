@@ -1,4 +1,4 @@
-const CACHE_NAME = "agenda-condelpi-shell-v2";
+const CACHE_NAME = "agenda-condelpi-shell-v3";
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -31,6 +31,8 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
   const url = new URL(request.url);
+
+  // No cachear datos, formularios ni respuestas del dominio de Google Apps Script.
   if (request.method !== "GET" || url.origin !== self.location.origin) return;
 
   if (request.mode === "navigate") {

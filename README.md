@@ -8,6 +8,12 @@
 
 GitHub Pages sirve una página de lanzamiento e instalación; abre Apps Script en una pestaña separada. No se incrusta el CRM en un `iframe`, para no depender de habilitar la incrustación desde cualquier dominio.
 
+## Versión actual del CRM
+
+La página de GitHub Pages se sincronizó con la versión vigente de acceso y mantiene la URL publicada de Google Apps Script. La versión del CRM preparada en el entorno de origen incluye la gestión de edición de contactos; esta función la ejecuta el backend, no el lanzador de GitHub Pages.
+
+Si se modifica código en Apps Script, guarda los cambios y publica una nueva versión de la implementación web correspondiente. El lanzador seguirá abriendo la URL configurada mientras esa implementación conserve el mismo enlace.
+
 ## Archivos del contenedor
 
 - `index.html`: página de acceso adaptable a móvil y escritorio.

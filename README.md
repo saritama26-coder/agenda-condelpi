@@ -1,56 +1,38 @@
 # Agenda CONDELPI — CRM Vehículos y Viviendas
 
-## Comportamiento móvil
+Contenedor web instalable para acceder a Agenda CONDELPI, cuya interfaz de negocio se sirve desde Google Apps Script.
 
-En pantallas pequeñas o dispositivos con puntero táctil, `index.html` abre la URL de Google Apps Script directamente, en lugar de depender de un `iframe`. Esto evita el bloqueo de incrustación y permite que la interfaz ocupe toda la ventana del navegador. En escritorio se conserva la vista integrada.
+## Enlaces
 
-Este cambio adapta la ruta de acceso, no el diseño interno del CRM. Para optimizar columnas, tarjetas, formularios, tablas y menús de la interfaz de negocio hace falta revisar y modificar el HTML/CSS servido por el proyecto de Apps Script. La configuración móvil se debe probar en el dispositivo real.
+- **Aplicación / acceso móvil:** https://saritama26-coder.github.io/agenda-condelpi/
+- **Repositorio:** https://github.com/saritama26-coder/agenda-condelpi
+- **Google Apps Script:** https://script.google.com/macros/s/AKfycbzZC9zWRiVMUijCYsvo10Nly5zPrZDJHS14fS2IKfS2z5HIYhHJSXHZvnwR-yhVUOT-5w/exec
 
+## Cambios del contenedor
 
-Contenedor PWA de Agenda CONDELPI servido por GitHub Pages. La interfaz de negocio se entrega desde Google Apps Script dentro de un `iframe`, siguiendo el patrón del proyecto PROFORMA GASV.
+- Página de acceso móvil con el logotipo de CONDELPI y botón de apertura directa del CRM.
+- Iconos PNG para manifest/PWA y para añadir el acceso a la pantalla de inicio.
+- Diseño adaptable, áreas seguras para pantallas con muesca y objetivos táctiles grandes.
+- Botón de instalación en navegadores compatibles y guía para la instalación manual en iPhone/iPad.
+- Service worker que guarda la página de acceso y sus recursos estáticos para disponibilidad básica sin conexión. El CRM requiere conexión a internet y no se usa ni se almacena información del CRM en la caché del contenedor.
+- En escritorio se conserva la vista integrada con un enlace alternativo para abrir Apps Script fuera del marco.
 
-## Enlaces de acceso
+## Instalar en la pantalla del teléfono
 
-- **Aplicación publicada en GitHub Pages:** https://saritama26-coder.github.io/agenda-condelpi/
-- **Implementación actual de Google Apps Script:** https://script.google.com/macros/s/AKfycbzZC9zWRiVMUijCYsvo10Nly5zPrZDJHS14fS2IKfS2z5HIYhHJSXHZvnwR-yhVUOT-5w/exec
+**iPhone/iPad:** abre el enlace de la aplicación en Safari, toca **Compartir** y después **Añadir a pantalla de inicio**.
 
+**Android:** abre el enlace en Chrome, abre el menú de tres puntos (⋮) y selecciona **Instalar aplicación** o **Añadir a pantalla principal**. Cuando el navegador muestre el botón de instalación en la página, también puedes usarlo.
 
-## Archivos principales
+## Limitaciones y tareas del backend
 
-- `index.html`: carga la URL `/exec` de Agenda CONDELPI a pantalla completa dentro de un `iframe`.
-- `manifest.json`: metadatos de la aplicación instalable.
-- `logo.png`: icono referenciado por el HTML y el manifiesto; agrega el archivo en la raíz si deseas que aparezca el icono de CONDELPI.
-- `.github/workflows/deploy-pages.yml`: publica automáticamente el sitio cuando hay cambios en `main`.
+Este repositorio incluye el contenedor web, el manifiesto, iconos y recursos estáticos; no incluye el código interno completo del CRM. Por tanto, no modifica ni certifica los permisos, formularios, tablas, almacenamiento, copias de seguridad, validaciones de datos ni las operaciones comerciales de Google Apps Script. Para auditar y corregir esas funciones hace falta el código fuente del proyecto de Apps Script.
 
-## Cambio obligatorio dentro de Google Apps Script
+La vista de escritorio usa un `iframe`. Si Google Apps Script bloquea la incrustación, debe probarse la apertura directa y revisar la configuración de `doGet()` del proyecto correcto antes de decidir si se permite incrustar el contenido. No actives `ALLOWALL` sin revisar los controles de acceso y el riesgo de *clickjacking*.
 
-**El `iframe` de GitHub Pages no funcionará hasta que el proyecto de Google Apps Script permita la incrustación.** En el editor del proyecto correcto de CONDELPI, localiza la función existente `doGet()`. En la cadena que devuelve `HtmlOutput`, añade esta llamada al objeto `HtmlOutput` después de `.evaluate()` y antes del punto y coma final:
+## Seguridad
 
-```javascript
-.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-```
+GitHub Pages publica los archivos de este repositorio. No guardes contraseñas, tokens, credenciales ni datos personales de clientes aquí. Los permisos de acceso deben aplicarse en el backend de Google Apps Script, no en el contenedor público.
 
-Por ejemplo, si la función ya utiliza una plantilla HTML llamada `Index`, el retorno tendría esta forma:
+## Publicación
 
-```javascript
-return HtmlService.createTemplateFromFile('Index')
-  .evaluate()
-  .setTitle('Agenda CONDELPI')
-  .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover')
-  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-```
-
-No pegues una segunda función `doGet()` al final del archivo: modifica la existente y conserva cualquier lógica propia de CONDELPI que ya contenga. Usa el nombre real del archivo HTML si no se llama `Index`.
-
-Después, guarda el proyecto y abre **Implementar → Gestionar implementaciones → Editar** (icono de lápiz), selecciona **Nueva versión** y pulsa **Implementar**. Comprueba que la URL `/exec` permanece igual. La configuración `ALLOWALL` permite que otros sitios incrusten la aplicación; úsala solo si es adecuado para la información manejada por CONDELPI y revisa sus controles de acceso frente a *clickjacking*.
-
-## Publicar en GitHub Pages
-
-GitHub Pages utiliza **GitHub Actions**. Tras guardar cambios, revisa la ejecución del flujo **Deploy Agenda CONDELPI to GitHub Pages** y confirma que termine correctamente.
-
-- Repositorio: https://github.com/saritama26-coder/agenda-condelpi
-- Sitio: https://saritama26-coder.github.io/agenda-condelpi/
-
-## Nota de seguridad
-
-GitHub Pages publica el código HTML al público. No guardes secretos, credenciales ni datos de clientes en este repositorio. La autorización a datos del CRM debe permanecer en Apps Script/los servicios de backend.
+Los cambios en la rama `main` activan el flujo **Deploy Agenda CONDELPI to GitHub Pages**. Comprueba en la pestaña Actions que la ejecución más reciente termine con estado `success`.

@@ -28,10 +28,17 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare site (solo archivos del lanzador)
+        run: |
+          mkdir -p _site
+          cp index.html manifest.json sw.js .nojekyll \
+             logo.png icon-192.png icon-512.png icon-512-maskable.png apple-touch-icon.png \
+             _site/
+
       - name: Upload site files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

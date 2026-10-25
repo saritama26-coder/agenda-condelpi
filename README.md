@@ -10,7 +10,7 @@ GitHub Pages sirve una página de lanzamiento e instalación; abre Apps Script e
 
 ## Sincronización de la cola de WhatsApp
 
-La captura revisada muestra dos filas con ID de cliente (`CLI-00001` y `CLI-00002`) y tres filas adicionales sin ID. El paquete `Agenda_CONDELPI_Correccion_Cola_WhatsApp_Actualizada.zip` incorpora el resguardo de filas sin ID en `Cola_WhatsApp_Excluidos` y las retira de la cola operativa al ejecutar **CRM Ventas → Actualizar cola de WhatsApp**. Esta corrección de backend todavía debe instalarse en el proyecto propietario de Apps Script y publicarse como nueva versión; GitHub Pages por sí solo no la activa.
+Se detectaron filas con datos incompletos en la cola de WhatsApp. El paquete privado de corrección incorpora un resguardo que mueve esas filas a `Cola_WhatsApp_Excluidos` y las retira de la cola operativa al ejecutar **CRM Ventas → Actualizar cola de WhatsApp**. (Los detalles de los registros afectados se mantienen fuera de este repositorio público.) Esta corrección de backend todavía debe instalarse en el proyecto propietario de Apps Script y publicarse como nueva versión; GitHub Pages por sí solo no la activa.
 
 ## Versión actual del CRM
 

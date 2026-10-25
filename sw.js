@@ -1,12 +1,14 @@
-const CACHE_NAME = "agenda-condelpi-shell-v5";
+const CACHE_NAME = "agenda-condelpi-shell-v6";
+// Las URLs deben coincidir exactamente con las que pide index.html (incluido ?v=5).
 const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./logo.png",
-  "./icon-192.png",
+  "./logo.png?v=5",
+  "./icon-192.png?v=5",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./icon-512-maskable.png",
+  "./apple-touch-icon.png?v=5"
 ];
 
 self.addEventListener("install", event => {
